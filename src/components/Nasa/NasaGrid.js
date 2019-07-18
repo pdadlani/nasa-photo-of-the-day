@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import DatePicker from 'react-date-picker';
 import axios from 'axios';
+import styled from 'styled-components'
 import NasaCard from './NasaCard.js';
 import BodyText from '../Display/BodyText.js';
 
+const NasaGridStyle = styled.div`
+  text-align: center;
+`;
+
 export default function NasaGrid() {
-  const [nasaPic, setNasaPic] = useState([]);
+  const [data, setData] = useState({});
   const [date, setDate] = useState(new Date());
   // let dateQuery = '';
   // console.log('date from useState', date);
@@ -40,23 +45,23 @@ export default function NasaGrid() {
     axios
       .get(`https://api.nasa.gov/planetary/apod?api_key=sU0uSLBmVfJpkNHTa4hARZ80DBVSk1xHdUhFCADz&date=${dateQuery}`)
       .then(response => {
-        setNasaPic(response.data)
+        setData(response.data)
         // console.log('nasaInfo', nasaInfo)
 
       });
   }, [dateQuery]);
 
-  // console.log('nasaPicDate:', nasaPic.date)
+  // console.log('nasaPicDate:', data.date)
   console.log('dateQuery', dateQuery);
 
   return (
-    <div className="nasa-grid">
-      <DatePicker onChange={onChange} value={date}/>
-      <NasaCard title={nasaPic.title} date={{dateQuery}} nasaPicDate={nasaPic.date} url={nasaPic.url} type={nasaPic.media_type} />
+    <NasaGridStyle>
+      <DatePicker onChange={onChange} value={date} />
+      <NasaCard title={data.title} date={{dateQuery}} nasaPicDate={data.date} url={data.url} hdUrl={data.hdurl} type={data.media_type} />
       
-      <BodyText text={nasaPic.explanation}/>
+      <BodyText text={data.explanation}/>
       {/* <DateSelection /> */}
       
-    </div>
+    </NasaGridStyle>
   );
 }
