@@ -7,11 +7,30 @@ import BodyText from '../Display/BodyText.js';
 export default function NasaGrid() {
   const [nasaPic, setNasaPic] = useState([]);
   const [date, setDate] = useState(new Date());
-  let dateQuery = '';
-  const year = date.getFullYear().toString(),
-    month = date.getMonth().toString(),
-    day = date.getDay().toString();
+  // let dateQuery = '';
+  // console.log('date from useState', date);
+  let year = date.getFullYear(),
+    // month = (date.getMonth() + 1).toString(),
+    month = (
+      (date.getMonth().toString.length === 1) ?
+        (0 + (date.getMonth() + 1).toString()) :
+        (date.getMonth() + 1).toString()
+    );
+    // month = date.getMonth();
+  let dateQuery = '',
+    day = (
+      (date.getDay().toString.length === 1) ?
+        (0 + date.getDay().toString()) :
+        date.getDay().toString()
+    );
+ 
+  // let dateQuery = '',
+  //   day = date.getDay();
+  
   dateQuery = `${year}-${month}-${day}`;
+  // console.log('dat4e from dateQuery', dateQuery)
+
+  // console.log('day', (day));
 
   const onChange = (date) => {
     setDate(date);
@@ -25,14 +44,15 @@ export default function NasaGrid() {
         // console.log('nasaInfo', nasaInfo)
 
       });
-  }, [date]);
+  }, [dateQuery]);
 
-  console.log('nasaPic:', nasaPic)
+  // console.log('nasaPicDate:', nasaPic.date)
+  console.log('dateQuery', dateQuery);
 
   return (
     <div className="nasa-grid">
       <DatePicker onChange={onChange} value={date}/>
-      <NasaCard title={nasaPic.title} date={nasaPic.date} url={nasaPic.url} type={nasaPic.media_type} />
+      <NasaCard title={nasaPic.title} date={{dateQuery}} nasaPicDate={nasaPic.date} url={nasaPic.url} type={nasaPic.media_type} />
       
       <BodyText text={nasaPic.explanation}/>
       {/* <DateSelection /> */}
