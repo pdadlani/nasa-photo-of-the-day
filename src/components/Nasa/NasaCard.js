@@ -7,22 +7,27 @@ const CardImg = styled.div`
   // max-width: 900px;
 `;
 
+const NasaCardDate = styled.div`
+  padding: 20px;
+`;
+
 export default function NasaCard(props) {
-  // [ title, date, nasaPicDate, url, type , hdUrl] = props;
-  console.log('date in NasaCard date', props.date.dateQuery);
-  console.log('date in nasaCard nasaPicDate', props.nasaPicDate);
-  // let actDate = date.dateQuery;
+
+  if (!props.data) {
+    return (
+      <h1> Loading ... </h1>
+    )
+  }
 
   return (
     <CardImg>
-      <h4 className='nasaCardTitle'>{props.title}</h4>
-      {/* <img src={url} style={{ maxWidth: "150px" }} /> */}
-      {props.type === "image" ? (
-        <img src={props.url} alt = "Space" style={{maxWidth: "1000px"}} /> 
+      <h4 className='nasaCardTitle'>{props.data.title}</h4>
+      {props.data.media_type === "image" ? (
+        <img src={props.data.url} alt = "Space" style={{width: "100%"}} /> 
       ) : (
         <iframe
           title="video"
-          src={props.url}
+          src={props.data.url}
           width="560"
           height="315"
           allowFullScreen
@@ -30,15 +35,11 @@ export default function NasaCard(props) {
         ></iframe>
       )
       }
-      <div className='nasaCardDate'>
-        {props.nasaPicDate === props.date ? (
-          props.date
-        ) : (
-          `This image was taken on ${props.nasaPicDate}`
-        )
+      <NasaCardDate>
+        {
+          `Date: ${props.data.date}`
         }
-      </div>
+      </NasaCardDate>
     </CardImg>
-    
   );
 }
